@@ -1,0 +1,10 @@
+deb http://nginx.org/packages/mainline/debian/ jessie nginx
+deb-src http://nginx.org/packages/mainline/debian/ jessie nginx
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys
+sudo apt-get update
+sudo apt-get install nginx
+
+sudo mkdir -p /etc/nginx/sites-available
+sudo mkdir -p /etc/nginx/sites-enabled
+sudo mkdir -p /etc/nginx/includes

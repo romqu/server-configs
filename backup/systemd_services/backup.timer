@@ -1,0 +1,9 @@
+[Unit]
+Description=Run backup
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=6hours
+
+[Install]
+WantedBy=timers.target

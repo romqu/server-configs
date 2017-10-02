@@ -1,0 +1,10 @@
+[Unit]
+Description=borg backup
+Wants=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/backup.sh

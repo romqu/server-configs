@@ -1,0 +1,21 @@
+#sudo mkdir -p /srv/http/domain/letsencrypt/.well-known/acme-challenge
+#sudo chmod -R 0555 /srv/http/domain/letsencrypt/.well-known/acme-challenge/
+
+sudo curl https://get.acme.sh | sh
+
+acme.sh --issue --force -d www.rodnok.de -d rodnok.de -w /srv/http/domain/copyright-monitoring.de/ --nginx --debug --keylength ec-384
+
+mkdir /etc/ssl/private/rodnok.de
+mkdir /etc/ssl/private/www.rodnok.de
+
+acme.sh --install-cert --ecc --debug -d rodnok.de \
+--cert-file      /etc/ssl/private/rodnok.de/rodnok.de.cert.pem  \
+--key-file       /etc/ssl/private/rodnok.de/rodnok.de.key.pem  \
+--fullchain-file /etc/ssl/private/rodnok.de/fullchain.pem \
+--reloadcmd     "systemctl reload nginx.service"
+
+acme.sh --install-cert --ecc --debug -d www.rodnok.de \
+--cert-file      /etc/ssl/private/www.rodnok.de/www.rodnok.de.cert.pem  \
+--key-file       /etc/ssl/private/www.rodnok.de/www.rodnok.de.key.pem  \
+--fullchain-file /etc/ssl/private/www.rodnok.de/fullchain.pem \
+--reloadcmd     "systemctl reload nginx.service"

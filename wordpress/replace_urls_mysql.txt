@@ -1,0 +1,15 @@
+UPDATE wp_options SET option_value = replace(option_value, 'http://versicherungskontor.net', 'http://rodnok.de') WHERE option_name = 'home' OR option_name = 'siteurl';
+
+UPDATE wp_posts SET guid = replace(guid, 'http://versicherungskontor.net','http://rodnok.de');
+
+UPDATE wp_posts SET post_content = replace(post_content, 'http://versicherungskontor.net', 'http://rodnok.de');
+
+UPDATE wp_postmeta SET meta_value = replace(meta_value,'http://versicherungskontor.net','http://rodnok.de');
+
+UPDATE wp_options SET option_value = replace(option_value, 'http://www.versicherungskontor.net', 'http://rodnok.de') WHERE option_name = 'home' OR option_name = 'siteurl';
+
+UPDATE wp_posts SET guid = replace(guid, 'http://www.versicherungskontor.net','http://rodnok.de');
+
+UPDATE wp_posts SET post_content = replace(post_content, 'http://www.versicherungskontor.net', 'http://rodnok.de');
+
+UPDATE wp_postmeta SET meta_value = replace(meta_value,'http://www.versicherungskontor.net','http://rodnok.de');
