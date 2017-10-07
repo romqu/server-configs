@@ -19,9 +19,9 @@ umask 007
 
 for DB in $DBS; do
 
- echo "Creating backup of \"${DB}\" database."
+  echo "Creating backup of \"${DB}\" database."
 
- $NICE $MYSQL_DUMP --defaults-extra-file=$MYSQL_CONF --events --single-transaction "$DB" | gzip -9 > "${BACKUP_DIR}/mysql_${DB}_${BACKUP_TIMESTAMP}.sql.gz"
+  $NICE $MYSQL_DUMP --defaults-extra-file=$MYSQL_CONF --events --single-transaction "$DB" | gzip -5 > "${BACKUP_DIR}/mysql_${DB}_${BACKUP_TIMESTAMP}.sql.gz"
 
 done
 

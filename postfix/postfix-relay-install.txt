@@ -1,0 +1,17 @@
+sudo add-apt-repository ppa:pdoes/postfix
+sudo apt-get update
+
+sudo ln -s /usr/lib/x86_64-linux-gnu/libmariadb.so.3 /usr/lib/x86_64-linux-gnu/libmariadbclient.so.18
+
+sudo nano /etc/postfix/sasl_passwd
+sslout.df.eu:465 server@7nerds.de:PASSWORD
+sudo postmap hash:/etc/postfix/sasl_passwd
+sudo chown root:root /etc/postfix/sasl_passwd /etc/postfix/sasl_passwd.db
+sudo chmod 0600 /etc/postfix/sasl_passwd /etc/postfix/sasl_passwd.db
+
+
+sudo nano /etc/postfix/main.cf
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+relayhost = sslout.df.eu:465
+
+sudo systemctl restart postfix

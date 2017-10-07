@@ -1,0 +1,3 @@
+- borg append only mode (only backups, no prune or delete possible)
+- research a better compression algorithm then gzip (if any)
+- provide a more clear folder structure for nginx inlcudes
