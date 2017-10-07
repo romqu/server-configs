@@ -14,8 +14,8 @@ readonly NICE=/usr/bin/nice
 readonly DBS_TO_IGNORE="mysql|information_schema|performance_schema|test"
 readonly DBS="$($MYSQL_CMD --defaults-extra-file=$MYSQL_CONF -Bse 'show databases' | /bin/grep -Ev $DBS_TO_IGNORE)"
 
-renice 10 $$ >/dev/null
-umask 007
+renice 10 $$ > /dev/null
+umask 177
 
 for DB in $DBS; do
 
