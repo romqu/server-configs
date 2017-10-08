@@ -51,7 +51,7 @@ check_if_websites_are_online(){
 
   for domain in "${DOMAINS[@]}"
   do
-    OUTPUT="$(curl -sSf -m 5 ${domain} > /dev/null)"
+    OUTPUT="$(curl -sSf -m 5 ${domain} 2>&1)"
 
     if [[ ! -z "${OUTPUT}" ]]; then
       echo "hi, I am not empty"

@@ -15,7 +15,7 @@ server {
 
   ## and redirect to the https host (declared below)
   ## avoiding http://www -> https://www -> https:// chain.
-  #include includes/redirect_https.conf;
+  return 301 https://versicherungskontor.net$request_uri;
 
   ## Only if there is no ssl certificate yet
   root /srv/http/domain/versicherungskontor.net;
@@ -39,7 +39,7 @@ server {
   include includes/ssl.conf;
 
   ## and redirect to the non-www host (declared below)
-  include includes/redirect_https.conf;
+  return 301 https://versicherungskontor.net$request_uri;
 }
 
 server {
