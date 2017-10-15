@@ -2,8 +2,8 @@
 
 set -o errexit
 set -o nounset
-set -o pipefail
-
+#set -o pipefail
+#set -euo pipefail
 source /usr/local/sbin/borg-passphrase.sh
 
 export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
@@ -20,8 +20,8 @@ readonly EMAIL_ADDRESS="server@7nerds.de"
 declare -A DOMAINS_STATUS
 
 DOMAINS=("7nerds.de" "ewqewqe21.de")
-send_mail=false
-was_backup_successful=true
+send_mail=1
+was_backup_successful=0
 
 
 ## last five backups
@@ -68,15 +68,15 @@ check_if_websites_are_online(){
 
 check_if_backup_was_successful(){
 
-
-  if systemctl status backup.service | grep -q "status=0/SUCCESS"; then
-    was_backup_successful=true
+  if systemctl status backup.service 2>&1 | grep -oq "status=0/SUCCESS"; then
+    echo "successful"
+    #was_backup_successful=0
   else
-    was_backup_successful=false
+    echo "not successful"
+    #was_backup_successful=1
   fi
 
   echo "${was_backup_successful}"
-
 }
 
 
