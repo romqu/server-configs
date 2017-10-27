@@ -3,21 +3,21 @@
 
 sudo curl https://get.acme.sh | sh
 
-acme.sh --issue --force -d www.versicherungskontor.net -w /srv/http/domain/versicherungskontor.net/ --nginx --debug --keylength ec-384
-acme.sh --issue --force -d versicherungskontor.net -w /srv/http/domain/versicherungskontor.net/ --nginx --debug --keylength ec-384
+acme.sh --issue --force -d www.kontorhaus-schlachte.de -w /srv/http/domain/kontorhaus-schlachte.de/ --nginx --debug --keylength ec-384
+acme.sh --issue --force -d kontorhaus-schlachte.de -w /srv/http/domain/kontorhaus-schlachte.de/ --nginx --debug --keylength ec-384
 
 
-mkdir /etc/ssl/private/versicherungskontor.net
-mkdir /etc/ssl/private/www.versicherungskontor.net
+mkdir /etc/ssl/private/kontorhaus-schlachte.de
+mkdir /etc/ssl/private/www.kontorhaus-schlachte.de
 
-acme.sh --install-cert --ecc --debug -d versicherungskontor.net \
---cert-file      /etc/ssl/private/versicherungskontor.net/versicherungskontor.net.cert.pem  \
---key-file       /etc/ssl/private/versicherungskontor.net/versicherungskontor.net.key.pem  \
---fullchain-file /etc/ssl/private/versicherungskontor.net/fullchain.pem \
+acme.sh --install-cert --ecc --debug -d kontorhaus-schlachte.de \
+--cert-file      /etc/ssl/private/kontorhaus-schlachte.de/kontorhaus-schlachte.de.cert.pem  \
+--key-file       /etc/ssl/private/kontorhaus-schlachte.de/kontorhaus-schlachte.de.key.pem  \
+--fullchain-file /etc/ssl/private/kontorhaus-schlachte.de/fullchain.pem \
 --reloadcmd     "systemctl reload nginx.service"
 
-acme.sh --install-cert --ecc --debug -d www.versicherungskontor.net \
---cert-file      /etc/ssl/private/www.versicherungskontor.net/www.versicherungskontor.net.cert.pem  \
---key-file       /etc/ssl/private/www.versicherungskontor.net/www.versicherungskontor.net.key.pem  \
---fullchain-file /etc/ssl/private/www.versicherungskontor.net/fullchain.pem \
+acme.sh --install-cert --ecc --debug -d www.kontorhaus-schlachte.de \
+--cert-file      /etc/ssl/private/www.kontorhaus-schlachte.de/www.kontorhaus-schlachte.de.cert.pem  \
+--key-file       /etc/ssl/private/www.kontorhaus-schlachte.de/www.kontorhaus-schlachte.de.key.pem  \
+--fullchain-file /etc/ssl/private/www.kontorhaus-schlachte.de/fullchain.pem \
 --reloadcmd     "systemctl reload nginx.service"

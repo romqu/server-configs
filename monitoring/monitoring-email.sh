@@ -4,6 +4,7 @@ set -o errexit
 set -o nounset
 #set -o pipefail
 #set -euo pipefail
+
 source /usr/local/sbin/borg-passphrase.sh
 
 export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
@@ -19,17 +20,18 @@ readonly DOMAINS_DIR="/srv/http/domain/"
 readonly EMAIL_ADDRESS="server@7nerds.de"
 declare -A DOMAINS_STATUS
 
-DOMAINS=("7nerds.de" "ewqewqe21.de")
-send_mail=1
-was_backup_successful=0
+DOMAINS=("7nerds.de")
+send_email=false
+was_backup_successful=true
+has_bad_smart_values=false
 
 
 ## last five backups
 # LAST_BACKUPS="$(borg --remote-path=${BORG_CMD_REMOTE_PATH} list ssh://${TARGET} | tail -5 | awk '{print "backup name: " $1 "  date: " $2" "$3" "$4}')"
 FREE_MEMORY="$(free -mh)"
 AVAILABLE_SPACE="$(df / -h)"
-DRIVE_STATE="$(/opt/MegaRAID/storcli/storcli64 /c0 /eall /sall show all | grep -E "S.M.A.R.T|Predictive")"
-BACKUP_SERVICE="$(systemctl list-timers | grep -E "backup|NEXT")"
+DRIVE_STATE=""
+#BACKUP_SERVICE="$(systemctl list-timers | grep -E "backup|NEXT")"
 
 
 get_domains_in_dir(){
@@ -58,39 +60,41 @@ check_if_websites_are_online(){
     fi
 
   done
-
-  for i in "${!DOMAINS_STATUS[@]}"
-  do
-    echo "key  : $i"
-    echo "value: ${DOMAINS_STATUS[$i]}"
-  done
 }
 
 check_if_backup_was_successful(){
 
   if systemctl status backup.service 2>&1 | grep -oq "status=0/SUCCESS"; then
-    echo "successful"
-    #was_backup_successful=0
+    was_backup_successful=true
   else
-    echo "not successful"
-    #was_backup_successful=1
+    was_backup_successful=false
+    send_email=true
   fi
-
-  echo "${was_backup_successful}"
 }
 
 
+check_if_drive_has_bad_smart_values(){
+
+  if /opt/MegaRAID/storcli/storcli64 /c0 /eall /sall show all 2>&1 | grep -E "S.M.A.R.T|Predictive" | grep -q "No"; then
+    has_bad_smart_values=false
+  else
+    has_bad_smart_values=true
+    send_email=true
+    DRIVE_STATE="$(/opt/MegaRAID/storcli/storcli64 /c0 /eall /sall show all)"
+  fi
+
+}
+
 send_email(){
 
-  if [ "$send_email" = true ] ; then
-    ## TODO
+  if [ "$send_email" = true ]; then
     echo $(print_status) | mailx -s "status" "${EMAIL_ADDRESS}"
   fi
 }
 
 print_status(){
 
-  echo -e "${BACKUP_SERVICE}\n\n${LAST_BACKUPS}\n\n${FREE_MEMORY}\n\n${AVAILABLE_SPACE}\n\n${DRIVE_STATE}"
+  echo -e8t5IE "$(print_domains_status)\n${FREE_MEMORY}\n\n${AVAILABLE_SPACE}\n\n${DRIVE_STATE}"
 }
 
 print_array(){
@@ -98,6 +102,20 @@ print_array(){
   printf '%s\n' "${!1}"
 }
 
+print_domains_status(){
+
+  local output=""
+
+  for i in "${!DOMAINS_STATUS[@]}"
+  do
+    output+="${i}: ${DOMAINS_STATUS[$i]}\n"
+  done
+
+  echo "${output}"
+}
+
 get_domains_in_dir
 check_if_websites_are_online
 check_if_backup_was_successful
+check_if_drive_has_bad_smart_values
+send_email
