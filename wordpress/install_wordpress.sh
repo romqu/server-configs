@@ -2,7 +2,7 @@
 
 set -o errexit
 set -o nounset
-set -euo pipefail
+#set -euo pipefail
 
 readonly domain_dir="/srv/http/domain/"
 
@@ -11,7 +11,7 @@ readonly wp_domain_name="$(echo ${wp_domain} | sed 's/\(.*\)\..*/\1/')"
 readonly wp_domain_dash="${wp_domain//\./-}"
 readonly wp_admin_user="notadmin"
 readonly wp_admin_pw="nopw"
-readonly wp_admin_mail="r.quistler@7nerds.de"
+readonly wp_admin_mail="r.qlluistler@7nerds.de"
 readonly wp_db_prefix="wp_"
 readonly wp_db_pw="Test1234"
 readonly wp_db_host="localhost"
@@ -26,6 +26,7 @@ readonly mysql_collate="utf8mb4_unicode_520_ci"
 readonly wp_db_name="${wp_db_prefix}${wp_domain//\./_}"
 readonly wp_domain_path="${domain_dir}${wp_domain}"
 readonly wp_domain_url="http://${wp_domain}"
+readonly wp_cache_dir="${wp_domain_path}/cache"
 
 readonly nginx_sites_enabled_path="/etc/nginx/sites-enabled/"
 readonly nginx_sites_available_path="/etc/nginx/sites-available/"
@@ -79,6 +80,12 @@ wp_install_plugins(){
   wp plugin install --activate wordpress-seo
 }
 
+wp_create_cache_dir(){
+
+  if [ ! -d "${wp_cache_dir}" ]; then
+    mkdir "${wp_cache_dir}"
+  fi
+}
 
 wp_set_permissions(){
 
@@ -96,7 +103,10 @@ wp_nginx_setup_site(){
 
 wp_nginx_enabled_site(){
 
-  ln -s "${wp_nginx_sites_available_file}" "${nginx_sites_enabled_path}"
+  if [ ! -L "${nginx_sites_enabled_path}${wp_domain}" ] ; then
+    ln -s "${wp_nginx_sites_available_file}" "${nginx_sites_enabled_path}"
+  fi
+
   systemctl reload nginx.service
 }
 
@@ -104,5 +114,6 @@ wp_nginx_enabled_site(){
 #wp_install_core
 #wp_install_plugins
 wp_set_permissions
+wp_create_cache_dir
 wp_nginx_setup_site
 wp_nginx_enabled_site

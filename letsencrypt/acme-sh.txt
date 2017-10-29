@@ -3,21 +3,20 @@
 
 sudo curl https://get.acme.sh | sh
 
-acme.sh --issue --force -d www.kontorhaus-schlachte.de -w /srv/http/domain/kontorhaus-schlachte.de/ --nginx --debug --keylength ec-384
-acme.sh --issue --force -d kontorhaus-schlachte.de -w /srv/http/domain/kontorhaus-schlachte.de/ --nginx --debug --keylength ec-384
+acme.sh --issue --force -d www.rodnok.de -w /srv/http/domain/rodnok.de/ --nginx --debug --keylength ec-384
+acme.sh --issue --force -d rodnok.de -w /srv/http/domain/rodnok.de/ --nginx --debug --keylength ec-384
 
+mkdir /etc/ssl/private/rodnok.de
+mkdir /etc/ssl/private/www.rodnok.de
 
-mkdir /etc/ssl/private/kontorhaus-schlachte.de
-mkdir /etc/ssl/private/www.kontorhaus-schlachte.de
-
-acme.sh --install-cert --ecc --debug -d kontorhaus-schlachte.de \
---cert-file      /etc/ssl/private/kontorhaus-schlachte.de/kontorhaus-schlachte.de.cert.pem  \
---key-file       /etc/ssl/private/kontorhaus-schlachte.de/kontorhaus-schlachte.de.key.pem  \
---fullchain-file /etc/ssl/private/kontorhaus-schlachte.de/fullchain.pem \
+acme.sh --install-cert --ecc --debug -d rodnok.de \
+--cert-file      /etc/ssl/private/rodnok.de/rodnok.de.cert.pem  \
+--key-file       /etc/ssl/private/rodnok.de/rodnok.de.key.pem  \
+--fullchain-file /etc/ssl/private/rodnok.de/fullchain.pem \
 --reloadcmd     "systemctl reload nginx.service"
 
-acme.sh --install-cert --ecc --debug -d www.kontorhaus-schlachte.de \
---cert-file      /etc/ssl/private/www.kontorhaus-schlachte.de/www.kontorhaus-schlachte.de.cert.pem  \
---key-file       /etc/ssl/private/www.kontorhaus-schlachte.de/www.kontorhaus-schlachte.de.key.pem  \
---fullchain-file /etc/ssl/private/www.kontorhaus-schlachte.de/fullchain.pem \
+acme.sh --install-cert --ecc --debug -d www.rodnok.de \
+--cert-file      /etc/ssl/private/www.rodnok.de/www.rodnok.de.cert.pem  \
+--key-file       /etc/ssl/private/www.rodnok.de/www.rodnok.de.key.pem  \
+--fullchain-file /etc/ssl/private/www.rodnok.de/fullchain.pem \
 --reloadcmd     "systemctl reload nginx.service"
