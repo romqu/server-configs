@@ -1,0 +1,102 @@
+## Choose between www and non-www, listen on the *wrong* one and redirect to
+## the right one -- http://wiki.nginx.org/Pitfalls#Server_Name
+
+# Define path to cache and memory zone. The memory zone should be unique.
+# keys_zone=ssl-fastcgi-cache.com:100m creates the memory zone and sets the maximum size in MBs.
+# inactive=60m will remove cached items that haven't been accessed for 60 minutes or more.
+fastcgi_cache_path /srv/http/doman/wordpress.template/cache levels=1:2 keys_zone=wordpress:100m inactive=60m;
+
+server {
+
+  include includes/listen_http.conf;
+
+  ## listen on both hosts
+  server_name wordpress.template www.wordpress.template;
+
+  ## and redirect to the https host (declared below)
+  ## avoiding http://www -> https://www -> https:// chain.
+  #return 301 https://wordpress.template$request_uri;
+
+  ## Only if there is no ssl certificate yet
+  root /srv/http/domain/wordpress.template;
+}
+
+server {
+
+  include includes/listen_http2.conf;
+
+  ## listen on the wrong host
+  server_name www.wordpress.template;
+
+  ## certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
+  ssl_certificate /etc/ssl/private/www.wordpress.template/fullchain.pem;
+  ssl_certificate_key /etc/ssl/private/www.wordpress.template/www.wordpress.template.key.pem;
+
+  ## verify chain of trust of OCSP response using Root CA and Intermediate certs
+  ssl_trusted_certificate /etc/ssl/private/www.wordpress.template/fullchain.pem;
+
+  include includes/location/protected_system_files.conf;
+  include includes/ssl.conf;
+
+  ## and redirect to the non-www host (declared below)
+  return 301 https://wordpress.template$request_uri;
+}
+
+server {
+
+    include includes/listen_http2.conf;
+
+    server_name wordpress.template;
+
+    root /srv/http/domain/wordpress.template;
+    index index.php;
+
+    access_log /var/log/nginx/wordpress-template-access.log;
+    error_log /var/log/nginx/wordpress-template-erros.log;
+
+    ## Specify a charset
+    charset utf-8;
+
+    ## certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
+    ssl_certificate /etc/ssl/private/wordpress.template/fullchain.pem;
+    ssl_certificate_key /etc/ssl/private/wordpress.template/wordpress.template.key.pem;
+
+    ## verify chain of trust of OCSP response using Root CA and Intermediate certs
+    ssl_trusted_certificate /etc/ssl/private/wordpress.template/fullchain.pem;
+
+    include includes/fastcgi-cache.conf;
+    include includes/location/static.conf;
+
+    location / {
+
+      try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+
+      try_files $uri = 404;
+
+      include includes/fastcgi-params.conf;
+
+      fastcgi_pass unix:/run/php/php7.1-fpm.sock;
+      fastcgi_index index.php;
+
+      ## Skip cache based on rules in includes/fastcgi-cache.conf
+      fastcgi_cache_bypass $skip_cache;
+      fastcgi_no_cache $skip_cache;
+
+      fastcgi_read_timeout 360s;
+      fastcgi_buffer_size 128k;
+      fastcgi_buffers 4 256k;
+
+      ## Define memory zone for caching. Should match key_zone in fastcgi_cache_path above.
+      fastcgi_cache wordpress;
+    }
+
+    ## Rewrite robots.txt
+    rewrite ^/robots.txt$ /index.php last;
+
+    include includes/ssl.conf;
+    include includes/location/protected_system_files.conf;
+    include includes/resolver.conf;
+}
