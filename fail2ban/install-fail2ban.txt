@@ -1,0 +1,6 @@
+wget https://github.com/fail2ban/fail2ban/archive/0.10.1.tar.gz
+tar xvf 0.10.1.tar.gz
+cd fail2ban-0.10.1
+sudo python3 setup.py install
+
+fail2ban-client -h

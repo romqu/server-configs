@@ -101,7 +101,7 @@ wp_nginx_setup_site(){
   sed -i "s/${wp_nginx_third_to_replace}/${wp_domain_name}/g" "${wp_nginx_sites_available_file}"
 }
 
-wp_nginx_enabled_site(){
+wp_nginx_enabled_site_without_ssl(){
 
   if [ ! -L "${nginx_sites_enabled_path}${wp_domain}" ] ; then
     ln -s "${wp_nginx_sites_available_file}" "${nginx_sites_enabled_path}"
@@ -109,6 +109,18 @@ wp_nginx_enabled_site(){
 
   systemctl reload nginx.service
 }
+
+wp_install_certificates(){
+
+  /home/snickers/install_certificate.sh "${wp_domain}"
+}
+
+wp_nginx_enable_site_ssl(){
+
+  
+}
+
+
 
 #wp_create_db
 #wp_install_core

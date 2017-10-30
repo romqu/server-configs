@@ -1,0 +1,5 @@
+https://github.com/borgbackup/borg/releases/download/1.1.1/borg-linux64
+
+sudo cp borg-linux64 /usr/local/bin/borg
+sudo chown root:root /usr/local/bin/borg
+sudo chmod 755 /usr/local/bin/borg
