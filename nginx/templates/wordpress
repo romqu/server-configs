@@ -29,11 +29,11 @@ server {
   server_name www.wordpress.template;
 
   ## certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
-  ssl_certificate /etc/ssl/private/www.wordpress.template/fullchain.pem;
-  ssl_certificate_key /etc/ssl/private/www.wordpress.template/www.wordpress.template.key.pem;
+  #ssl_certificate /etc/ssl/private/www.wordpress.template/fullchain.pem;
+  #ssl_certificate_key /etc/ssl/private/www.wordpress.template/www.wordpress.template.key.pem;
 
   ## verify chain of trust of OCSP response using Root CA and Intermediate certs
-  ssl_trusted_certificate /etc/ssl/private/www.wordpress.template/fullchain.pem;
+  #ssl_trusted_certificate /etc/ssl/private/www.wordpress.template/fullchain.pem;
 
   include includes/location/protected_system_files.conf;
   include includes/ssl.conf;
@@ -58,11 +58,11 @@ server {
     charset utf-8;
 
     ## certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
-    ssl_certificate /etc/ssl/private/wordpress.template/fullchain.pem;
-    ssl_certificate_key /etc/ssl/private/wordpress.template/wordpress.template.key.pem;
+    #ssl_certificate /etc/ssl/private/wordpress.template/fullchain.pem;
+    #ssl_certificate_key /etc/ssl/private/wordpress.template/wordpress.template.key.pem;
 
     ## verify chain of trust of OCSP response using Root CA and Intermediate certs
-    ssl_trusted_certificate /etc/ssl/private/wordpress.template/fullchain.pem;
+    #ssl_trusted_certificate /etc/ssl/private/wordpress.template/fullchain.pem;
 
     include includes/fastcgi-cache.conf;
     include includes/location/static.conf;

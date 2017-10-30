@@ -21,9 +21,9 @@ install_certificates(){
     "${acme_cmd}" --issue -d "${domain}" -w "${domain_dir}${domain}" --nginx --debug --keylength ec-384
 
     "${acme_cmd}" --install-cert --ecc --debug -d "${domain}" \
-    --cert-file      /etc/ssl/private/rodnok.de/"${domain}".cert.pem  \
-    --key-file       /etc/ssl/private/rodnok.de/"${domain}".key.pem  \
-    --fullchain-file /etc/ssl/private/rodnok.de/fullchain.pem \
+    --cert-file      /etc/ssl/private/"${domain}"/"${domain}".cert.pem  \
+    --key-file       /etc/ssl/private/"${domain}"/"${domain}".key.pem  \
+    --fullchain-file /etc/ssl/private/"${domain}"/fullchain.pem \
     --reloadcmd "systemctl reload nginx.service"
 
   done

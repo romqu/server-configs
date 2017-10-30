@@ -6,20 +6,21 @@ set -o nounset
 
 readonly domain_dir="/srv/http/domain/"
 
-readonly wp_domain="rodnok.de"
+readonly wp_domain="wp.rodnok.de"
 readonly wp_domain_name="$(echo ${wp_domain} | sed 's/\(.*\)\..*/\1/')"
 readonly wp_domain_dash="${wp_domain//\./-}"
 readonly wp_admin_user="notadmin"
 readonly wp_admin_pw="nopw"
-readonly wp_admin_mail="r.qlluistler@7nerds.de"
+readonly wp_admin_mail="r.quistler@7nerds.de"
 readonly wp_db_prefix="wp_"
 readonly wp_db_pw="Test1234"
 readonly wp_db_host="localhost"
 readonly wp_title="Title"
 readonly wp_locale="de_DE"
+readonly wp_plugins=("")
 
 readonly mysql_cmd="/usr/bin/mysql"
-readonly mysql_conf="/etc/mysql/mysql-backwp_nginx_enabled_siteup-config.cnf"
+readonly mysql_conf="/etc/mysql/mysql-backup-config.cnf"
 readonly mysql_default_char_set="utf8mb4"
 readonly mysql_collate="utf8mb4_unicode_520_ci"
 
@@ -36,10 +37,13 @@ readonly wp_nginx_sites_available_file="${nginx_sites_available_path}${wp_domain
 readonly wp_nginx_first_to_replace="wordpress\.template"
 readonly wp_nginx_second_to_replace="wordpress-template"
 readonly wp_nginx_third_to_replace="wordpress"
+readonly wp_nginx_site_root_replace="\(root ${wp_domain_path//\//\\/};\)"
+readonly wp_nginx_site_return_replace="\(#\)\(return 301 https\)"
 
 wp_create_db(){
 
   $mysql_cmd --defaults-extra-file=$mysql_conf <<EOF
+    DROP DATABASE IF EXISTS ${wp_db_name};
     CREATE DATABASE ${wp_db_name} DEFAULT CHARACTER SET ${mysql_default_char_set} COLLATE ${mysql_collate};
     GRANT ALL ON ${wp_db_name}.* TO '${wp_db_name}'@'localhost' IDENTIFIED BY '${wp_db_pw}';
     FLUSH PRIVILEGES;
@@ -71,13 +75,16 @@ wp_install_core(){
   --title="${wp_title}" \
   --admin_user="${wp_admin_user}" \
   --admin_password="${wp_admin_pw}" \
-  --admin_email="${wp_admin_mail}"
+  --admin_email="${wp_admin_mail}" \
+  --skip-themes \
+  --skip-plugins
+
 
 }
 
 wp_install_plugins(){
 
-  wp plugin install --activate wordpress-seo
+  wp plugin install --allow-root --activate wordpress-seo
 }
 
 wp_create_cache_dir(){
@@ -101,7 +108,7 @@ wp_nginx_setup_site(){
   sed -i "s/${wp_nginx_third_to_replace}/${wp_domain_name}/g" "${wp_nginx_sites_available_file}"
 }
 
-wp_nginx_enabled_site_without_ssl(){
+wp_nginx_enabled_site_no_ssl(){
 
   if [ ! -L "${nginx_sites_enabled_path}${wp_domain}" ] ; then
     ln -s "${wp_nginx_sites_available_file}" "${nginx_sites_enabled_path}"
@@ -117,15 +124,22 @@ wp_install_certificates(){
 
 wp_nginx_enable_site_ssl(){
 
-  
+  echo "${wp_nginx_site_root_replace}"
+  echo "${wp_nginx_site_return_replace}"
+
+  sed -i "0,/${wp_nginx_site_root_replace}/s//#\1/" "${wp_nginx_sites_available_file}"
+  sed -i "s/${wp_nginx_site_return_replace}/\2/" "${wp_nginx_sites_available_file}"
+
+  systemctl reload nginx.service
 }
 
 
-
-#wp_create_db
-#wp_install_core
-#wp_install_plugins
-wp_set_permissions
+wp_create_db
+wp_install_core
+wp_install_plugins
 wp_create_cache_dir
+wp_set_permissions
 wp_nginx_setup_site
-wp_nginx_enabled_site
+wp_nginx_enabled_site_no_ssl
+wp_install_certificates
+wp_nginx_enable_site_ssl
