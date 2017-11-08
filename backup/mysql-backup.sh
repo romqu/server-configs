@@ -5,7 +5,7 @@ readonly BACKUP_TIMESTAMP=$(date +%d_%m_%Y_%H_%M_%S)
 
 readonly MYSQL_CMD=/usr/bin/mysql
 readonly MYSQL_DUMP=/usr/bin/mysqldump
-readonly MYSQL_CONF=/etc/mysql/mysql-backup-config.cnf
+readonly MYSQL_CONF=/etc/mysql/mysql-client.cnf
 
 readonly ARCHIVE_DAYS="14"
 

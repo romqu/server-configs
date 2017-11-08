@@ -18,7 +18,9 @@ install_certificates(){
       mkdir "${certificate_dir}${domain}"
     fi
 
-    "${acme_cmd}" --issue -d "${domain}" -w "${domain_dir}${domain}" --nginx --debug --keylength ec-384
+    if ! acme.sh --list 2>&1 | grep -q "${domain//\./\\.}"; then
+      "${acme_cmd}" --issue -d "${domain}" -w "${domain_dir}${domain//www\./}" --nginx --debug --keylength ec-384
+    fi
 
     "${acme_cmd}" --install-cert --ecc --debug -d "${domain}" \
     --cert-file      /etc/ssl/private/"${domain}"/"${domain}".cert.pem  \
