@@ -1,0 +1,30 @@
+gitea
+---------------------------
+sudo adduser --system --no-create-home --disabled-login --group gitea
+
+cd /srv/http/git/gitea
+
+sudo wget -O https://dl.gitea.io/gitea/master/gitea-master-linux-amd64
+
+sudo mv gitea-master-linux-amd64 gitea
+
+sudo chmod +x gitea
+
+sudo mkdir -p custom/conf
+
+sudo mkdir /var/log/gitea
+
+
+gitea-postgres
+---------------------------
+
+sudo -u postgres psql
+
+CREATE ROLE gitea WITH CREATEDB LOGIN ENCRYPTED PASSWORD '';
+
+sudo psql -U gitea -h localhost
+
+CREATE DATABASE gitea OWNER gitea;
+
+(GRANT ALL PRIVILEGES ON DATABASE gitea TO gitea;)
+

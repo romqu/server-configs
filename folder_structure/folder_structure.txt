@@ -1,0 +1,11 @@
+http & co
+-----------------
+/srv/http/wordpress
+/srv/http/git
+/srv/http/cloud
+
+backup
+-----------------
+/var/backup/database/mysql
+/var/backup/database/pgsql
+

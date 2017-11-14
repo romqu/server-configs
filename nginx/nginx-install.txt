@@ -1,3 +1,5 @@
+debian
+------------------------------------------------------------------------
 deb http://nginx.org/packages/mainline/debian/ jessie nginx
 deb-src http://nginx.org/packages/mainline/debian/ jessie nginx
 
@@ -8,3 +10,9 @@ sudo apt-get install nginx
 sudo mkdir -p /etc/nginx/sites-available
 sudo mkdir -p /etc/nginx/sites-enabled
 sudo mkdir -p /etc/nginx/includes
+
+
+ubuntu
+-------------------------------------------------------------------------
+
+sudo add-apt-repository ppa:nginx/development
