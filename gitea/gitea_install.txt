@@ -3,19 +3,22 @@ gitea
 sudo adduser --system --no-create-home --disabled-login --group git
 
 sudo mkdir -p /srv/http/git/gitea/custom/conf/
-sudo mkdir -p /srv/http/git/gitea/repos/
+sudo mkdir -p /srv/http/git/gitea/repositories/
 sudo mkdir /var/log/gitea/
+sudo mkdir -p /var/run/gitea/
+
+sudo chown -R git:www-data /srv/http/git/
+sudo chown -R git:git /var/log/gitea/
+sudo chown -R git:www-data /var/run/gitea/
 
 cd /srv/http/git/gitea
 
-sudo wget -O https://dl.gitea.io/gitea/master/gitea-master-linux-amd64
+sudo wget -O https://dl.gitea.io/gitea/1.2.3/gitea-1.2.3-linux-amd64
 
 sudo mv gitea-master-linux-amd64 gitea
 
 sudo chmod +x gitea
 
-sudo chown -R git:www-data /srv/http/git/
-sudo chown -R git:git /var/log/gitea/
 
 gitea-postgres
 ---------------------------
@@ -28,5 +31,7 @@ sudo psql -U gitea -h localhost
 
 CREATE DATABASE gitea OWNER gitea;
 
-(GRANT ALL PRIVILEGES ON DATABASE gitea TO gitea;)
+GRANT ALL PRIVILEGES ON DATABASE gitea TO gitea;
+
+pg_hba -> replace local unix "peer" with "md5"
 

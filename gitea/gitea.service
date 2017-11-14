@@ -16,11 +16,11 @@ After=postgresql.service
 #LimitNOFILE=65535
 Type=simple
 User=git
-Group=git
+Group=www-data
 WorkingDirectory=/srv/http/git/gitea
 ExecStart=/srv/http/git/gitea/gitea web
 Restart=always
-Environment=USER=git #HOME=/home/git
+Environment=USER=git HOME=/srv/http/git/gitea
 
 [Install]
 WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+server {
+
+    include includes/listen_http.conf;
+
+    access_log /var/log/nginx/git.7nerds.de-access.log;
+    error_log /var/log/nginx/git.7nerds.de-erros.log;
+
+    ## listen on both hosts
+    server_name git.7nerds.de www.git.7nerds.de;
+
+    ## and redirect to the https host (declared below)
+    ## avoiding http://www -> https://www -> https:// chain.
+    #return 301 https://wordpress.template$request_uri;
+  
+    location / {
+        
+        proxy_pass http://localhost:3000;
+        include includes/proxy_params.conf
+    }
+}
