@@ -1,6 +1,10 @@
 gitea
 ---------------------------
-sudo adduser --system --no-create-home --disabled-login --group gitea
+sudo adduser --system --no-create-home --disabled-login --group git
+
+sudo mkdir -p /srv/http/git/gitea/custom/conf/
+sudo mkdir -p /srv/http/git/gitea/repos/
+sudo mkdir /var/log/gitea/
 
 cd /srv/http/git/gitea
 
@@ -10,10 +14,8 @@ sudo mv gitea-master-linux-amd64 gitea
 
 sudo chmod +x gitea
 
-sudo mkdir -p custom/conf
-
-sudo mkdir /var/log/gitea
-
+sudo chown -R git:www-data /srv/http/git/
+sudo chown -R git:git /var/log/gitea/
 
 gitea-postgres
 ---------------------------
