@@ -16,3 +16,5 @@ ubuntu
 -------------------------------------------------------------------------
 
 sudo add-apt-repository ppa:nginx/development
+
+sudo rm -rf /etc/nginx/sites-enabled/default

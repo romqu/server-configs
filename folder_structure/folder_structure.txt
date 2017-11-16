@@ -1,16 +1,21 @@
 http & co
 -----------------
-/srv/http/wordpress
-/srv/http/git
-/srv/http/cloud
+/srv/http/wordpress (wordpress:www-data)
+/srv/http/git (git:www-data)
+/srv/http/cloud (cloud:www-data)
 
 
 backup
 -----------------
-/var/backup/database/mysql
-/var/backup/database/pgsql
+/var/backup/database/mysql (root:root:600)
+/var/backup/database/pgsql (root:root:600)
 
 
 systemd service & timer
 -----------------
 /etc/systemd/system/
+
+
+scripts
+-----------------
+/usr/local/sbin/ (root:root:700)

@@ -2,6 +2,9 @@ gitea
 ---------------------------
 sudo adduser --system --no-create-home --disabled-login --group git
 
+sudo adduser --home /srv/http/git/git.7nerds.com --shell --gecos "" /usr/bin/git-shell gitea
+
+
 sudo mkdir -p /srv/http/git/gitea/custom/conf/
 sudo mkdir -p /srv/http/git/gitea/repositories/
 sudo mkdir /var/log/gitea/
