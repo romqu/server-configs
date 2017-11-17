@@ -57,7 +57,7 @@ download_and_create(){
   mkdir -p "${seafile_dir}"
   cd "${seafile_dir}"
 
-  wget https://download.seadrive.org/seafile-server_6.2.2_x86-64.tar.gz
+  wget https://download.seadrive.org/seafile-server_6.2.3_x86-64.tar.gz
   tar -xzf seafile-server_*
   mkdir installed
   mv seafile-server_* installed
