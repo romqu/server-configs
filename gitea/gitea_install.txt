@@ -1,6 +1,5 @@
 gitea
 ---------------------------
-sudo adduser --system --no-create-home --disabled-login --group git
 
 sudo adduser --home /srv/http/git/git.7nerds.com --shell --gecos "" /usr/bin/git-shell gitea
 

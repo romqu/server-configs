@@ -29,3 +29,4 @@ $NICE find "${BACKUP_DIR}" -mtime +"${ARCHIVE_DAYS}" -exec rm {} \;
 
 
 # /usr/local/sbin
+echo "noob" | wall
