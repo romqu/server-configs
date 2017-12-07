@@ -21,7 +21,7 @@ Group=www-data
 WorkingDirectory=/srv/http/git/git.7nerds.de
 ExecStartPre=/bin/mkdir -p /var/run/gitea/
 ExecStartPre=/bin/chown -R git:www-data /var/run/gitea/
-ExecStart=/srv/http/git/git.7nerds.de/gitea web
+ExecStart=/srv/http/git/git.7nerds.de/gitea web -c custom/conf/app.ini
 Restart=always
 Environment=USER=git HOME=/srv/http/git/git.7nerds.de
 
