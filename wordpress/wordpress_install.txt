@@ -1,9 +1,8 @@
-CREATE DATABASE versicherungskontor_net_wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
-GRANT ALL ON versicherungskontor_net_wordpress.* TO 'versicherungskontor_net_wordpress'@'localhost' IDENTIFIED BY 'Findus1234'
-FLUSH PRIVILEGES
+CREATE DATABASE wp_versicherungskontor_net DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci
+GRANT ALL ON wp_versicherungskontor_net.* TO 'wp_versicherungskontor_net'@'localhost' IDENTIFIED BY 'Findus1234'
 EXIT
 
-mysqldump -u root -p -v sendmeback_de_wordpress > dump.sql
-mysql -u versicherungskontor_net_wordpress -p versicherungskontor_net_wordpress < dump.sql
+mysqldump -u root -p -v wp_versicherungskontor_net > dump.sql
+mysql -u wp_versicherungskontor_net -p wp_versicherungskontor_net < dump.sql
 
 curl -s https://api.wordpress.org/secret-key/1.1/salt/

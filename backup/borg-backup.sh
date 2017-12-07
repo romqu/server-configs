@@ -46,7 +46,7 @@ readonly COMPRESSION_LEVEL=6
 readonly HOME=/home/snickers
 
 # Whitespace-separated list of paths to back up.
-readonly SOURCE_PATHS="/srv/http/domain /var/backup/mysql"
+readonly SOURCE_PATHS="/srv/http/ /var/backup/mysql"
 
 # Whitespace-separated list of paths to exclude from backup.
 readonly EXCLUDE=""
@@ -58,16 +58,16 @@ readonly KEEP_MONTHLY=6
 readonly KEEP_YEARLY=1
 
 create() {
-  echo "Starting Borg archive creation: ${TARGET}"
-
-  # shellcheck disable=SC2086
-  # We want $SOURCE_PATHS to undergo word splitting here.
-  borg create -v --stats --remote-path=/mnt/borealis/ensumer/home/borg-linux64 \
-  --compression "${COMPRESSION_ALGO},${COMPRESSION_LEVEL}" \
-  --exclude "$EXCLUDE" \
-  "${TARGET}::{hostname}-{now:%d-%m-%Y_%H:%M:%S}" $SOURCE_PATHS
-
-  echo "Finished Borg archive creation: ${TARGET}"
+    echo "Starting Borg archive creation: ${TARGET}"
+    
+    # shellcheck disable=SC2086
+    # We want $SOURCE_PATHS to undergo word splitting here.
+    borg create -v --stats --remote-path=/mnt/borealis/ensumer/home/borg-linux64 \
+    --compression "${COMPRESSION_ALGO},${COMPRESSION_LEVEL}" \
+    --exclude "$EXCLUDE" \
+    "${TARGET}::{hostname}-{now:%d-%m-%Y_%H:%M:%S}" $SOURCE_PATHS
+    
+    echo "Finished Borg archive creation: ${TARGET}"
 }
 
 create

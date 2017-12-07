@@ -4,7 +4,7 @@
 # Define path to cache and memory zone. The memory zone should be unique.
 # keys_zone=ssl-fastcgi-cache.com:100m creates the memory zone and sets the maximum size in MBs.
 # inactive=60m will remove cached items that haven't been accessed for 60 minutes or more.
-fastcgi_cache_path /srv/http/doman/versicherungskontor.net/cache levels=1:2 keys_zone=versicherungskontor:100m inactive=60m;
+fastcgi_cache_path /srv/http/wordpress/versicherungskontor.net/cache levels=1:2 keys_zone=versicherungskontor:100m inactive=60m;
 
 server {
 
@@ -15,10 +15,10 @@ server {
 
   ## and redirect to the https host (declared below)
   ## avoiding http://www -> https://www -> https:// chain.
-  return 301 https://versicherungskontor.net$request_uri;
+  #return 301 https://versicherungskontor.net$request_uri;
 
   ## Only if there is no ssl certificate yet
-  root /srv/http/domain/versicherungskontor.net;
+  root /srv/http/wordpress/versicherungskontor.net;
 }
 
 server {
@@ -29,11 +29,11 @@ server {
   server_name www.versicherungskontor.net;
 
   ## certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
-  ssl_certificate /etc/ssl/private/www.versicherungskontor.net/fullchain.pem;
-  ssl_certificate_key /etc/ssl/private/www.versicherungskontor.net/www.versicherungskontor.net.key.pem;
+  #ssl_certificate /etc/ssl/private/www.versicherungskontor.net/fullchain.pem;
+  #ssl_certificate_key /etc/ssl/private/www.versicherungskontor.net/www.versicherungskontor.net.key.pem;
 
   ## verify chain of trust of OCSP response using Root CA and Intermediate certs
-  ssl_trusted_certificate /etc/ssl/private/www.versicherungskontor.net/fullchain.pem;
+  #ssl_trusted_certificate /etc/ssl/private/www.versicherungskontor.net/fullchain.pem;
 
   include includes/location/protected_system_files.conf;
   include includes/ssl.conf;
@@ -48,7 +48,7 @@ server {
 
     server_name versicherungskontor.net;
 
-    root /srv/http/domain/versicherungskontor.net;
+    root /srv/http/wordpress/versicherungskontor.net;
     index index.php;
 
     access_log /var/log/nginx/versicherungskontor-net-access.log;
@@ -58,11 +58,11 @@ server {
     charset utf-8;
 
     ## certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
-    ssl_certificate /etc/ssl/private/versicherungskontor.net/fullchain.pem;
-    ssl_certificate_key /etc/ssl/private/versicherungskontor.net/versicherungskontor.net.key.pem;
+    #ssl_certificate /etc/ssl/private/versicherungskontor.net/fullchain.pem;
+    #ssl_certificate_key /etc/ssl/private/versicherungskontor.net/versicherungskontor.net.key.pem;
 
     ## verify chain of trust of OCSP response using Root CA and Intermediate certs
-    ssl_trusted_certificate /etc/ssl/private/versicherungskontor.net/fullchain.pem;
+    #ssl_trusted_certificate /etc/ssl/private/versicherungskontor.net/fullchain.pem;
 
     include includes/fastcgi-cache.conf;
     include includes/location/static.conf;
@@ -78,7 +78,7 @@ server {
 
       include includes/fastcgi-params.conf;
 
-      fastcgi_pass unix:/run/php/php7.1-fpm.sock;
+      fastcgi_pass unix:/run/php/php7.2-fpm.sock;
       fastcgi_index index.php;
 
       ## Skip cache based on rules in includes/fastcgi-cache.conf
