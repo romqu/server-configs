@@ -1,0 +1,5 @@
+add "usrquota,grpquota" to fstab options
+sudo mount -o remount /
+sudo quotacheck -cugm /
+sudo quotaon /
+sudo setquota -u www-data 20971520 20971520 1000000 1000000 -a /
