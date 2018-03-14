@@ -41,12 +41,7 @@ readonly ENCRYPTION_METHOD=repokey
 readonly COMPRESSION_ALGO=zlib
 readonly COMPRESSION_LEVEL=6
 
-# Define home directory explicitly, since this script will be run by root.
-# (We could also define $HOME in our anacrontab instead.)
-readonly HOME=/home/snickers
-
-# Whitespace-separated list of paths to back up.
-readonly SOURCE_PATHS="/srv/http/ /var/backup/mysql"
+ readonly SOURCE_PATHS="/srv/http/ /var/backup/mysql"
 
 # Whitespace-separated list of paths to exclude from backup.
 readonly EXCLUDE=""

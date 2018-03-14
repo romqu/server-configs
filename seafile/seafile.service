@@ -1,0 +1,14 @@
+[Unit]
+Description=Seafile
+# add mysql.service or postgresql.service depending on your database to the line below
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/srv/http/cloud/cloud.7nerds.de/seafile-server-latest/seafile.sh start
+ExecStop=/srv/http/cloud/cloud.7nerds.de/seafile-server-latest/seafile.sh stop
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target

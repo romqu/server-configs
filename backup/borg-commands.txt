@@ -1,0 +1,5 @@
+sudo borg list --remote-path=/borg1 12161@ch-s012.rsync.net:snickers/
+sudo borg list --remote-path=/mnt/borealis/ensumer/home/borg-linux64 roman@kroon.fi:/mnt/borealis/ensumer/home/backup
+
+
+sudo borg init --encryption=repokey  --remote-path=borg1 12161@ch-s012.rsync.net:snickers

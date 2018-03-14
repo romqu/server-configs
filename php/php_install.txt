@@ -17,8 +17,13 @@ sudo apt-get update
 
 
 
+/etc/php/7.2/fpm/php.ini
+/etc/php/7.2/cli/php.ini
 
-
+upload_max_filesize = 100M
+post_max_size = 100M
+max_execution_time = 1800
+memory_limit = 256M
 
 sudo apt-get install php7.2-common php7.2-readline php7.2-fpm php7.2-mysql php7.2-curl php7.2-gd php7.2-mbstring php7.2-xml php7.2-xmlrpc php7.2-json
 
@@ -26,6 +31,8 @@ sudo sed -i "s/memory_limit = .*/memory_limit = 256M/" /etc/php/7.2/fpm/php.ini
 sudo sed -i "s/upload_max_filesize = .*/upload_max_filesize = 128M/" /etc/php/7.2/fpm/php.ini
 sudo sed -i "s/zlib.output_compression = .*/zlib.output_compression = on/" /etc/php/7.2/fpm/php.ini
 sudo sed -i "s/max_execution_time = .*/max_execution_time = 18000/" /etc/php/7.2/fpm/php.ini
+
+
 
 
 { \
