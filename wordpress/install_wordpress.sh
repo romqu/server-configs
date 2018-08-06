@@ -4,16 +4,16 @@ set -o errexit
 set -o nounset
 #set -euo pipefail
 
-readonly domain_dir="/srv/http/domain/"
+readonly domain_dir="/srv/http/wordpress/"
 
 readonly wp_domain="$1"
 readonly wp_domain_name="$(echo ${wp_domain} | sed 's/\(.*\)\..*/\1/')"
 readonly wp_domain_dash="${wp_domain//\./-}"
-readonly wp_admin_user="notadmin"
-readonly wp_admin_pw="nopw"
+readonly wp_admin_user="demo"
+readonly wp_admin_pw="demo"
 readonly wp_admin_mail="r.quistler@7nerds.de"
 readonly wp_db_prefix="wp_"
-readonly wp_db_pw="Test1234"
+readonly wp_db_pw="Findus1234"
 readonly wp_db_host="localhost"
 readonly wp_title="Title"
 readonly wp_locale="de_DE"
@@ -36,7 +36,7 @@ readonly wp_nginx_sites_available_file="${nginx_sites_available_path}${wp_domain
 
 readonly wp_nginx_first_to_replace="wordpress\.template"
 readonly wp_nginx_second_to_replace="wordpress-template"
-readonly wp_nginx_third_to_replace="wordpress"
+readonly wp_nginx_third_to_replace="wordpress_cache"
 readonly wp_nginx_site_root_replace="\(root ${wp_domain_path//\//\\/};\)"
 readonly wp_nginx_site_return_replace="\(#\)\(return 301 https\)"
 readonly wp_nginx_site_first_ssl_replace="\(#\)\(ssl_certificate\)"
@@ -135,7 +135,7 @@ wp_nginx_enabled_site_no_ssl(){
 
 wp_install_certificates(){
 
-  /home/snickers/install_certificate.sh "${wp_domain}"
+  sudo -u root /usr/local/sbin/acme_sh_install_certificate.sh  "${wp_domain}" "${domain_dir}"
 }
 
 wp_nginx_enable_site_ssl(){
@@ -149,13 +149,13 @@ wp_nginx_enable_site_ssl(){
 }
 
 
-wp_create_db
-wp_install_core
-wp_delete_all_plugins
-wp_install_plugins
-wp_create_cache_dir
-wp_set_permissions
+#wp_create_db
+#wp_install_core
+#wp_delete_all_plugins
+#wp_install_plugins
+#wp_create_cache_dir
+#wp_set_permissions
 wp_nginx_setup_site
-wp_nginx_enabled_site_no_ssl
-wp_install_certificates
-wp_nginx_enable_site_ssl
+#wp_nginx_enabled_site_no_ssl
+#wp_install_certificates
+#wp_nginx_enable_site_ssl

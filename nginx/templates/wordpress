@@ -4,7 +4,7 @@
 # Define path to cache and memory zone. The memory zone should be unique.
 # keys_zone=ssl-fastcgi-cache.com:100m creates the memory zone and sets the maximum size in MBs.
 # inactive=60m will remove cached items that haven't been accessed for 60 minutes or more.
-fastcgi_cache_path /srv/http/domain/wordpress.template/cache levels=1:2 keys_zone=wordpress:100m inactive=60m;
+fastcgi_cache_path /srv/http/wordpress/wordpress.template/cache levels=1:2 keys_zone=wordpress_cache:100m inactive=60m;
 
 server {
 
@@ -18,7 +18,7 @@ server {
   #return 301 https://wordpress.template$request_uri;
 
   ## Only if there is no ssl certificate yet
-  root /srv/http/domain/wordpress.template;
+  root /srv/http/wordpress/wordpress.template;
 }
 
 server {
@@ -48,7 +48,7 @@ server {
 
     server_name wordpress.template;
 
-    root /srv/http/domain/wordpress.template;
+    root /srv/http/wordpress/wordpress.template;
     index index.php;
 
     access_log /var/log/nginx/wordpress-template-access.log;
@@ -78,7 +78,7 @@ server {
 
       include includes/fastcgi-params.conf;
 
-      fastcgi_pass unix:/run/php/php7.1-fpm.sock;
+      fastcgi_pass unix:/run/php/php7.2-fpm.sock;
       fastcgi_index index.php;
 
       ## Skip cache based on rules in includes/fastcgi-cache.conf
@@ -90,7 +90,7 @@ server {
       fastcgi_buffers 4 256k;
 
       ## Define memory zone for caching. Should match key_zone in fastcgi_cache_path above.
-      fastcgi_cache wordpress;
+      fastcgi_cache wordpress_cache;
     }
 
     ## Rewrite robots.txt
